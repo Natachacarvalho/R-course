@@ -1,0 +1,118 @@
+<html>
+<body>
+<h3>Part 1</h3>
+Write a function named &#39; getmonitor&#39; that takes three arguments:
+<br>
+&#39; id&#39; , &#39; directory&#39; , and &#39; summarize&#39; .
+<br>Given a monitor ID number, &#39; getmonitor&#39;
+<p>reads that monitor&#39;s particulate matter data from the directory specified in the &#39; directory&#39;
+    argument and returns a data frame containing that monitor&#39; s data.
+
+<p>If &#39;summarize = TRUE&#39; , then &#39; getmonitor&#39; produces a summary of the data frame with the &#39;
+    summary&#39; function and prints it to the console.
+
+<p>A prototype of the function is as follows
+    <code>
+        getmonitor <- function(id, directory, summarize = FALSE) {
+        ## &#39; id&#39; is a vector of length 1 indicating the monitor ID
+        ## number. The user can specify &#39; id&#39; as either an integer, a
+        ## character, or a numeric.
+
+        ## &#39; directory &#39; is a character vector of length 1 indicating
+        ## the location of the CSV files
+
+        ## &#39; summarize &#39; is a logical indicating whether a summary of
+        ## the data should be printed to the console; the default is
+        ## FALSE
+
+        ## Your code here
+        }
+    </code>
+
+<p>
+    You can see some example output from this function. The function that you write should be able to match this output.
+    Please save your code to a file named getmonitor.R. To run the test script for this part, make sure your working
+    directory has the file getmonitor.R in it and the run
+    <code>
+        <p>
+            source( &quot; http://spark-public.s3.amazonaws.com/compdata/scripts/getmonitor-test.R &quot; )
+         </p>
+
+            <br>
+            getmonitor.testscript()
+
+    </code>
+<p>
+    Afterwards, upload the output files on the Assignments List page.
+
+<h3>Part 2</h3>
+Write a function that reads a directory full of files and reports the number of completely observed cases in each data
+file. The function should return a data frame where the first column is the name of the file and the second column is
+the number of complete cases. A prototype of this function follows
+
+complete <- function(directory, id = 1:332) {
+## &#39; directory&#39; is a character vector of length 1 indicating
+## the location of the CSV files
+
+## &#39; id&#39; is an integer vector indicating the monitor ID numbers
+## to be used
+
+## Return a data frame of the form:
+## id nobs
+## 1 117
+## 2 1041
+## ...
+## where &#39; id&#39; is the monitor ID number and &#39; nobs&#39; is the
+## number of complete cases
+}
+ <p>
+You can see some example output from this function. The function that you write should be able to match this output.
+Please save your code to a file named complete.R. To run the test script for this part, make sure your working directory
+has the file complete.R in it and the run
+<code>
+source( &quot; http://spark-public.s3.amazonaws.com/compdata/scripts/complete-test.R &quot; )
+    <br>
+complete.testscript()
+</code>
+     <p>
+Afterwards, upload the output files on the Assignments List page.
+<h3>Part 3</h3>
+Write a function that takes a directory of data files and a threshold for complete cases and calculates the correlation
+between sulfate and nitrate for monitor locations where the number of completely observed cases (on all variables) is
+greater than the threshold. The function should return a vector of correlations for the monitors that meet the threshold
+requirement. If no monitors meet the threshold requirement, then the function should return a numeric vector of length
+0. A prototype of this function follows
+<code>
+corr <- function(directory, threshold = 0) {
+## &#39; directory&#39; is a character vector of length 1 indicating
+## the location of the CSV files
+
+## &#39; threshold&#39; is a numeric vector of length 1 indicating the
+## number of completely observed observations (on all
+## variables) required to compute the correlation between
+## nitrate and sulfate; the default is 0
+
+## Return a numeric vector of correlations
+}
+</code>
+<p>
+For this function you will need to use the &#39; cor&#39; function in R which calculates the correlation between two
+vectors. Please read the help page for this function via &#39; ?cor&#39; and make sure that you know how to use it.
+<p>
+You can see some example output from this function. The function that you write should be able to match this output.
+Please save your code to a file named corr.R. To run the test script for this part, make sure your working directory has
+the file corr.R in it and the run
+<code>
+source( &quot; http://spark-public.s3.amazonaws.com/compdata/scripts/corr-test.R &quot; )
+    <br>
+corr.testscript()
+</code>
+    <p>
+Afterwards, upload the output files on the Assignments List page.
+Grading
+    <p>
+This assignment will be graded using unit tests executed via the test scripts you run on your computer. We will compare
+the output of your functions to the correct output. For each test passed you receive the specified number of points on
+the Assignments List web page. For each function in this assignment there will be 10 points to earn, for a total of 30
+points for the entire assignment.
+</body>

@@ -1,0 +1,1 @@
+If colnames seems clunky, how about using structure? structure(data.frame(1:5), names=c("mycolumnname")) :
