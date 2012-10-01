@@ -39,40 +39,28 @@ complete <- function(directory, id = 1:332) {
         ## where id is the monitor ID number and 'nobs' is the
         ## number of complete cases
 
-
-        heading <- c( ID, NOBS )
-
-        nonNA <- data.frame( heading )
-
+        #  set up the report heading
+        nonNA_report <- c( ID, NOBS )
 
         for ( i in id ) {
 
         ## Combine id and directory to create a full name
-        print(id)
             idchar <- as.character(formatC(i, width=3, format='d', flag=0))
-
             filename <- paste0( idchar , CSV )
-
             fullname <- paste0(directory, SLASH, filename)
 
-
-
         ## extract from csv and create a frame
-        cat("fullname ", fullname, NL)
-        air_list<-list(read.csv( fullname ))
 
-        air_data <- data.frame( air_list)
+        air_data <- data.frame(list(read.csv( fullname )))
 
-
+        ## omit lines with NA
         ds_na_omit <- na.omit( air_data )
-        cat("index: ", i, NL)
-        cat("ds_na_omit ",str(ds_na_omit) )
-        cat("nrows ", length( ds_na_omit ) )
 
+        # add report to  vector
+        report <- c( as.character(i),as.character(nrow(ds_na_omit)) )
+        nonNA_report <- append( nonNA_report, report  , after = length(report)   )
 
-        # so I need to see how many of the obs have no na's
-        # how many nobs   ro
-        # add to id,nobs to vector nonNA
-        #now need to print out nonNA that I collected
         }
-     }
+        # traversed the input and accumulated the results
+        return (nonNA_report)
+      }
