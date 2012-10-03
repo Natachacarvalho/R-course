@@ -50,7 +50,9 @@ complete <- function(directory, id = 1:332) {
         nobVector<- append( nobVector, as.character(nrow(ds_na_omit)))
         }
 
-           nonNA_report <- data.frame ( c(ID,idVector), c(NOBS,nobVector ) )
+           nonNA_report <- data.frame( idVector,nobVector  )
+           colnames( nonNA_report ) <- c("id", "nobs")
+
 
         # traversed  the input and accumulated the results
         return (nonNA_report)
