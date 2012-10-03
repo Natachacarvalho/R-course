@@ -49,11 +49,10 @@ complete <- function(directory, id = 1:332) {
         idVector <- append(idVector, as.character(i) )
         nobVector<- append( nobVector, as.character(nrow(ds_na_omit)))
         }
-
+         # create frame from the traversal of the id's and label columnes
            nonNA_report <- data.frame( idVector,nobVector  )
            colnames( nonNA_report ) <- c("id", "nobs")
 
-
-        # traversed  the input and accumulated the results
+          # complete
         return (nonNA_report)
       }
