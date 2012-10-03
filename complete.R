@@ -4,25 +4,7 @@
         # where the first column is the name of the file and the
         # second column is the number of complete cases.
         # A prototype of this function follows
-        NL <- "\n"
-        CSV <- ".csv"
-        SLASHSLASH <- "/"
-        ID <- "id"
-        NOBS <- "nobs"
 
-
-        createfullname <- function (id, directory) { }
-
-
-         checkNA <- function( air_data ) {
-
-           countNA <- 0
-
-           for ( i in air_data) {
-
-           } #nd FOR
-
-        }
 
 complete <- function(directory, id = 1:332) {
         ## directory' is a character vector of length 1 indicating
@@ -39,8 +21,15 @@ complete <- function(directory, id = 1:332) {
         ## where id is the monitor ID number and 'nobs' is the
         ## number of complete cases
 
-        #  set up the report heading
-        nonNA_report <- c( ID, NOBS )
+        NL <- "\n"
+        CSV <- ".csv"
+        SLASH <- "/"
+        ID <- "id"
+        NOBS <- "nobs"
+
+
+        idVector <- vector(mode = "character", length = 0)
+        nobVector <- vector(mode = "character", length = 0)
 
         for ( i in id ) {
 
@@ -56,11 +45,13 @@ complete <- function(directory, id = 1:332) {
         ## omit lines with NA
         ds_na_omit <- na.omit( air_data )
 
-        # add report to  vector
-        report <- c( as.character(i),as.character(nrow(ds_na_omit)) )
-        nonNA_report <- append( nonNA_report, report  , after = length(report)   )
-
+        # add elements to  vector
+        idVector <- append(idVector, as.character(i) )
+        nobVector<- append( nobVector, as.character(nrow(ds_na_omit)))
         }
-        # traversed the input and accumulated the results
+
+           nonNA_report <- data.frame ( c(ID,idVector), c(NOBS,nobVector ) )
+
+        # traversed  the input and accumulated the results
         return (nonNA_report)
       }
