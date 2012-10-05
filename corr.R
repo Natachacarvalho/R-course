@@ -10,7 +10,7 @@ corr <- function(directory, threshold = 0) {
         ## nitrate and sulfate; the default is 0
 
         ## Return a numeric vector of correlations
-        ## Constants
+        ############### Constants ##############
         NL <- "\n"
         ID <- "id"
         NOBS <- "nobs"
@@ -20,29 +20,38 @@ corr <- function(directory, threshold = 0) {
         sulphurVector<- vector( mode="numeric", length=0)
         nitrateVector<- vector( mode="numeric", length=0)
         corrVector<- vector( mode="numeric", length=0)
+        ErrorVector<- vector( mode="numeric", length=0)   # if no correlations exceeding threshold
 
-        id <- c(1:2 )                                        #Testing
+        id <- c(1:2 )                                        #Testing ##############
 
 
         for ( i in id ) {
 
+        ## parse the file names to be processed
          fullname <- create_fullname ( i , directory )
 
         ## extract from csv and create a frame
 
-       # cat("fullname: ", fullname, NL)                ##DEBUG
+        # cat("fullname: ", fullname, NL)                ##DEBUG    ##############
 
         ds_na_omit <- get_data( fullname)
 
-        #
-        # run a cor (relation) Maybe this should be a function too
-        compute_cor( ds_na_omit )
+
+        ## run a cor (relation) Maybe this should be a function too
+        if threshold  > =  length ( ds_na_omit )    {
+            compute_cor( ds_na_omit )
+        }
+
+        ## now need to work on the vector build
 
         }
 
-        # OK I have the correlations
+        ## Done return the vector of correlation or ErrorVector
+
+
         return (ds_na_omit)
-        }        # end of corr
+        }
+        ## end of corr
 
         #### TODO ####
         1. use the threshold value, no need to run correlation if below threshold
@@ -57,6 +66,7 @@ corr <- function(directory, threshold = 0) {
             na.omit( data.frame( ( list(read.csv( fullname ))) ))
         }
 
+ ############### create_fullname ##############
         create_fullname <- function( i, directory ) {
         CSV <- ".csv"
         SLASH <- "/"
