@@ -32,7 +32,7 @@ complete <- function(directory, id = 1:332) {
         nobVector <- vector(mode = "character", length = 0)
 
         for ( i in id ) {
-
+        fullname <- combine_id_dir ( i, dir )
         ## Combine id and directory to create a full name
             idchar <- as.character(formatC(i, width=3, format='d', flag=0))
             filename <- paste0( idchar , CSV )
