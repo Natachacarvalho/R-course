@@ -10,25 +10,19 @@ corr <- function(directory, threshold = 0) {
         ## nitrate and sulfate; the default is 0
 
         ## Return a numeric vector of correlations
-
+        ## Constants
         NL <- "\n"
-
         ID <- "id"
         NOBS <- "nobs"
-
-
-
-
-
+        # create some static vectors, although I may not need them
         idVector <- vector(mode = "character", length = 0)
         nobVector <- vector(mode = "character", length = 0)
         sulphurVector<- vector( mode="numeric", length=0)
         nitrateVector<- vector( mode="numeric", length=0)
         corrVector<- vector( mode="numeric", length=0)
+
         id <- c(1:2 )                                        #Testing
-        traceback()
-        #debug(get_data)
-        #debug(create_fullname)
+
 
         for ( i in id ) {
 
@@ -36,32 +30,31 @@ corr <- function(directory, threshold = 0) {
 
         ## extract from csv and create a frame
 
-        cat("fullname: ", fullname, NL)                ##DEBUG
+       # cat("fullname: ", fullname, NL)                ##DEBUG
 
-        air_data <- get_data( fullname)
-        ds_na_omit <- na.omit( air_data )
-        cat("ds_na_omit:", NL)
-        str(ds_na_omit)
+        ds_na_omit <- get_data( fullname)
 
-        cat("howmany : ", length(ds_na_omit$sulfate), " , ", length(ds_na_omit$nitrate), NL)
-        ds_na_omit$corr <-  cor( as.numeric(ds_na_omit$sulfate), y=ds_na_omit$nitrate )
-        # did I get good data ?
+        #
+        # run a cor (relation) Maybe this should be a function too
+        compute_cor( ds_na_omit )
 
-        cat( "frame after cor : ", NL)
-        str(ds_na_omit)
+        }
 
-         }
-
-         # create frame from the traversal of the id's and label columnes
-           ds_na_omit <- data.frame( idVector,nobVector  )
-           colnames( ds_na_omit ) <- c( ID, NOBS )
-
-          # complete
+        # OK I have the correlations
         return (ds_na_omit)
-      }        # end of corr
+        }        # end of corr
+
+        #### TODO ####
+        1. use the threshold value, no need to run correlation if below threshold
+        2. return a vector of correlations for the monitors that met the threshold
+        3. else return a numeric vector of length 0
+
+
+        ############### Functions ##############
 
        get_data <- function(fullname)  {
-            data.frame( ( list(read.csv( fullname ))) )
+       # read the csv, frame it and drop the NAs
+            na.omit( data.frame( ( list(read.csv( fullname ))) ))
         }
 
         create_fullname <- function( i, directory ) {
@@ -72,4 +65,7 @@ corr <- function(directory, threshold = 0) {
          filename <- paste0( idchar , CSV )
          returnValue<- paste0(directory, SLASH, filename)
         }
+
+        compute_cor <- function( ds_na_omit )
+        ds_na_omit$corr <-  cor( as.numeric(ds_na_omit$sulfate), y=ds_na_omit$nitrate )
 
