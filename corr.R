@@ -32,7 +32,7 @@ corr <- function(directory, threshold = 0) {
 
         ## extract from csv and create a frame
 
-        # cat("fullname: ", fullname, NL)                ##DEBUG    ##############
+        cat("fullname: ", fullname, NL)                ##DEBUG    ##############
 
         ds_na_omit <- get_data( fullname)
 
@@ -60,7 +60,7 @@ corr <- function(directory, threshold = 0) {
 
 
         ############### Functions ##############
-
+ ############### get_data ##############
        get_data <- function(fullname)  {
        # read the csv, frame it and drop the NAs
             na.omit( data.frame( ( list(read.csv( fullname ))) ))

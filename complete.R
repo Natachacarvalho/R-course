@@ -22,37 +22,49 @@ complete <- function(directory, id = 1:332) {
         ## number of complete cases
 
         NL <- "\n"
-        CSV <- ".csv"
-        SLASH <- "/"
         ID <- "id"
         NOBS <- "nobs"
 
-
-        idVector <- vector(mode = "character", length = 0)
-        nobVector <- vector(mode = "character", length = 0)
+        idVector <- vector(mode = "numeric", length = 0)
+        nobVector <- vector(mode = "numeric", length = 0)
 
         for ( i in id ) {
-        fullname <- combine_id_dir ( i, dir )
-        ## Combine id and directory to create a full name
-            idchar <- as.character(formatC(i, width=3, format='d', flag=0))
-            filename <- paste0( idchar , CSV )
-            fullname <- paste0(directory, SLASH, filename)
+        fullname <- create_fullname ( i, directory )
 
         ## extract from csv and create a frame
 
-        air_data <- data.frame(list(read.csv( fullname )))
+        air_data <- get_data( fullname )
 
         ## omit lines with NA
         ds_na_omit <- na.omit( air_data )
 
         # add elements to  vector
-        idVector <- append(idVector, as.character(i) )
-        nobVector<- append( nobVector, as.character(nrow(ds_na_omit)))
+        idVector <- append(idVector, as.numeric(i) )
+        nobVector<- append( nobVector, as.numeric(nrow(ds_na_omit)))
         }
          # create frame from the traversal of the id's and label columnes
-           nonNA_report <- data.frame( idVector,nobVector  )
-           colnames( nonNA_report ) <- c("id", "nobs")
 
-          # complete
+        id <- as.numeric(idVector)
+        nobs <- as.numeric(nobVector)
+        nonNA_report <- data.frame( id, nobs ,stringsAsFactors = FALSE)
+
+
+
         return (nonNA_report)
       }
+       ############### create_fullname ##############
+        create_fullname <- function( i, directory ) {
+        CSV <- ".csv"
+        SLASH <- "/"
+         ## Combine id and directory to create a full name
+         idchar <- as.character(formatC(i, width=3, format='d', flag=0))
+         filename <- paste0( idchar , CSV )
+         # str(filename)
+         returnValue<- paste0(directory, SLASH, filename)
+        }
+
+        ############### get_data ##############
+       get_data <- function(fullname)  {
+       # read the csv, frame it and drop the NAs
+            na.omit( data.frame( ( (read.csv( fullname ))) ))
+        }
