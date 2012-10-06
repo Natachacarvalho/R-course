@@ -22,51 +22,33 @@ corr <- function(directory, threshold = 0) {
         corrVector<- vector( mode="numeric", length=0)
         ErrorVector<- vector( mode="numeric", length=0)   # if no correlations exceeding threshold
 
-        id <- c(1:2 )                                        #Testing ##############
-
-
         for ( i in id ) {
 
         ## parse the file names to be processed
          fullname <- create_fullname ( i , directory )
 
         ## extract from csv and create a frame
-
-        cat("fullname: ", fullname, NL)                ##DEBUG    ##############
-
         ds_na_omit <- get_data( fullname)
-
 
         ## run a cor (relation) Maybe this should be a function too
         if threshold  > =  length ( ds_na_omit )    {
             compute_cor( ds_na_omit )
         }
 
-        ## now need to work on the vector build
-
         }
-
         ## Done return the vector of correlation or ErrorVector
-
-
         return (ds_na_omit)
         }
         ## end of corr
 
-        #### TODO ####
-        1. use the threshold value, no need to run correlation if below threshold
-        2. return a vector of correlations for the monitors that met the threshold
-        3. else return a numeric vector of length 0
-
-
-        ############### Functions ##############
- ############### get_data ##############
+############### Functions ##############
+############### get_data ##############
        get_data <- function(fullname)  {
        # read the csv, frame it and drop the NAs
             na.omit( data.frame( ( list(read.csv( fullname ))) ))
         }
 
- ############### create_fullname ##############
+############### create_fullname ##############
         create_fullname <- function( i, directory ) {
         CSV <- ".csv"
         SLASH <- "/"
@@ -75,7 +57,7 @@ corr <- function(directory, threshold = 0) {
          filename <- paste0( idchar , CSV )
          returnValue<- paste0(directory, SLASH, filename)
         }
-
+############### create_fullname ##############
         compute_cor <- function( ds_na_omit )
         ds_na_omit$corr <-  cor( as.numeric(ds_na_omit$sulfate), y=ds_na_omit$nitrate )
 
