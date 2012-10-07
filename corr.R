@@ -21,7 +21,7 @@ corr <- function(directory, threshold = 0) {
         nitrateVector<- vector( mode="numeric", length=0)
         corrVector<- vector( mode="numeric", length=0)
         ErrorVector<- vector( mode="numeric", length=0)   # if no correlations exceeding threshold
-
+        id<- seq(1:332)
         for ( i in id ) {
 
         ## parse the file names to be processed
@@ -31,7 +31,8 @@ corr <- function(directory, threshold = 0) {
         ds_na_omit <- get_data( fullname)
 
         ## run a cor (relation) Maybe this should be a function too
-        if threshold  > =  length ( ds_na_omit )    {
+        str(threshold)
+        if (threshold  >=  length ( ds_na_omit ) )   {
             compute_cor( ds_na_omit )
         }
 
