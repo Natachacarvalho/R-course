@@ -21,7 +21,10 @@ corr <- function(directory, threshold = 0) {
         nitrateVector<- vector( mode="numeric", length=0)
         corrVector<- vector( mode="numeric", length=0)
         ErrorVector<- vector( mode="numeric", length=0)   # if no correlations exceeding threshold
+
+        count_of_passed_threads <<- 0
         id<- seq(1:332)
+
         for ( i in id ) {
 
         ## parse the file names to be processed
@@ -31,14 +34,16 @@ corr <- function(directory, threshold = 0) {
         ds_na_omit <- get_data( fullname)
 
         ## run a cor (relation) Maybe this should be a function too
-        str(threshold)
-        if (threshold  >=  length ( ds_na_omit ) )   {
-            compute_cor( ds_na_omit )
-        }
 
+        #### where is corr called
+
+        if ( nrow ( ds_na_omit ) > threshold )   {
+            correlation <- compute_cor( ds_na_omit  )
+            corrVector <- append( corrVector , correlation)
+            }
         }
-        ## Done return the vector of correlation or ErrorVector
-        return (ds_na_omit)
+        ## Done return the vector of correlation (  0 if none meeting threshold )
+                           return (corrVector)
         }
         ## end of corr
 
@@ -47,7 +52,7 @@ corr <- function(directory, threshold = 0) {
        get_data <- function(fullname)  {
        # read the csv, frame it and drop the NAs
             na.omit( data.frame( ( list(read.csv( fullname ))) ))
-        }
+                    }
 
 ############### create_fullname ##############
         create_fullname <- function( i, directory ) {
@@ -58,7 +63,8 @@ corr <- function(directory, threshold = 0) {
          filename <- paste0( idchar , CSV )
          returnValue<- paste0(directory, SLASH, filename)
         }
-############### create_fullname ##############
-        compute_cor <- function( ds_na_omit )
-        ds_na_omit$corr <-  cor( as.numeric(ds_na_omit$sulfate), y=ds_na_omit$nitrate )
-
+############### compute_cor ##############
+        compute_cor <- function( ds_na_omit  ) {
+        count_of_passed_threads <-  count_of_passed_threads + 1
+        correlation <-  cor( as.numeric(ds_na_omit$sulfate), y=ds_na_omit$nitrate )
+        }
