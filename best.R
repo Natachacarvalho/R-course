@@ -15,9 +15,9 @@ checkstate<- function(state) {
     else { return (FALSE) } #should not occur
 }
 checkoutcome<-function(outcome_name) {
-  if (outcome_name == "Heart Attack" 
-      | outcome_name == "Heart Failure" 
-      | outcome_name == "Pneumonia" )
+  if (outcome_name == "heart attack" 
+      | outcome_name == "heart failure" 
+      | outcome_name == "pneumonia" )
     return (TRUE) 
   
   else  return (FALSE)
