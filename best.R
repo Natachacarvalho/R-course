@@ -1,21 +1,26 @@
 
 NL <<- "\n"
 best <- function(state, outcome_name , num = "best"){ 
-
+  
   checkarguments(state, outcome_name , num)
   #cat("OK",NL)
   outcome <- readoutcome()
   #print(str(outcome))
-  states <- buildlistStates (outcome $State)
+  states <- buildlistStates (outcome$State)
   table(outcome$State)
   smalltable<-data.frame(table(outcome$State),stringsAsFactors = FALSE)
-  # todo colname
   colnames(smalltable)<-c("state","count")
-  resulttable <-subsetsoutcomeState(smalltable)
- print (str(smalltable))
- print (str(resulttable))
+  outcome2 <-subsetsoutcomeState(smalltable, num)
+  print (str(smalltable))
+  print (str(outcome2)) 
+  makeplot( outcome2 )
   }
 
+makeplot<-function(outcome2 ){
+    fatal <- outcome2$count
+    state <- outcome2$state
+    boxplot( fatal ~ state)
+}
 checkstate<- function(state) {
   if (!is.character(state) ){ return (FALSE) }  
   if (nchar(state) == 2 ) { 
@@ -35,8 +40,7 @@ checknum<-function(num) {
     if (num == "best" | num == "worst"  )  return (TRUE)
     return (FALSE)
   }
-checkarguments<-function (state, outcome_name , num ){
- 
+checkarguments<-function (state, outcome_name ,num) { 
   if (!checkstate(state))  stop ("invalid state")
   if (!checkoutcome(outcome_name))  stop ("invalid outcome")
   if (!checknum(num))  stop ("invalid num")
@@ -49,10 +53,18 @@ buildlistStates <-function(States){
   sorted<-order(uniq)
   return (sorted)
 }
-subsetsoutcomeState<- function(smalltable) {
+subsetsoutcomeState<- function(smalltable, num ) {
+  criteria <- num
+  cat("num="      , str(num), NL)
+  cat("criteria" , str(criteria), NL)
+  if ( num == "best")  criteria<- 1 
+  if ( num == "worst")  criteria<- nrow(smalltable)
   
-  smallframe = data.frame
+  cat("num=" , str(num), NL)
+  cat("criteria" , str(criteria), NL)
+  print(str(criteria))
   # using subset function
-  newdata <- subset(smalltable, count >= 20 )
-
+  outcome2 <- subset(smalltable, smalltable$count >= criteria )
+  cat("outcome2.nrows = ", nrow(outcome2 ), NL)
+  return (outcome2)
 }
