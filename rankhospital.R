@@ -21,12 +21,7 @@ makeplot<-function(outcome2 ){
     state <- outcome2$state
     boxplot( fatal ~ state , main = "Heart Attack 30 day Death Rate by State")
 }
-checkstate<- function(state) {
-  if (!is.character(state) ){ return (FALSE) }  
-  if (nchar(state) == 2 ) { 
-       return(TRUE)}
-    else { return (FALSE) } #should not occur
-}
+
 checkoutcome<-function(outcome_name) {
   if (outcome_name == "heart attack" 
       | outcome_name == "heart failure" 
