@@ -8,16 +8,17 @@ best <- function(state, outcome_name ){
   
   outcome <- readoutcome(state)
   str(outcome)
-  cat("name for ,11 ", names)
-  results <- parse.data(outcome,  outcome_name)
+  cat("name for ,11 ", dimnames(outcome))
+  
+  #results <- parse.data(outcome,  outcome_name)
  
   }
 
 parse.data<- function (out, outcome_name) {
   
-  out.sorted <- out[order( ,out$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack )]
-  debug()
-  str(out.sorted)
+  out.sorted <- out[order(,out$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack  )]
+  #debug()
+  #str(out.sorted)
 }
 readoutcome<-function(state){
   value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")
