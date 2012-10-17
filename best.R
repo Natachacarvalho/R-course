@@ -1,25 +1,33 @@
 
 NL <<- "\n"
+outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
+outcomeINDEX <<-   c( 11, 17,23 )
 best <- function(state, outcome_name ){ 
   
   checkarguments(state, outcome_name )
   
-  debug(readoutcome)
-  outcome <- readoutcome()
-  
-  print("before str")
+  outcome <- readoutcome(state)
   str(outcome)
-  #diminished.outcome <- parse.data(outcome, state,outcome_name)
-  print ("after parse")
+  cat("name for ,11 ", names)
+  results <- parse.data(outcome,  outcome_name)
+ 
   }
-readoutcome<-function(){
+
+parse.data<- function (out, outcome_name) {
+  
+  out.sorted <- out[order( ,out$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack )]
+  debug()
+  str(out.sorted)
+}
+readoutcome<-function(state){
   value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")
   
   table <- data.frame( value, stringsAsFactors = FALSE)
   table[,11] <- as.numeric(table[,11]    )
   table[,17] <- as.numeric(table[,17]    )
   table[,23] <- as.numeric(table[,23]    )
-  str(table)
+  table <- subset(table, State == state)
+  
   return(table)
   
   # add selection / subset
