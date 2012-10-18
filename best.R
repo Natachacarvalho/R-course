@@ -12,8 +12,9 @@ best <- function(state, outcome_name ){
   
   
   results <- parse.data(outcome,  outcome_name)
-   
-  print(subset( results, select=c( County.Name,Hospital.Name, mortHA))  )
+  ###################### DEBUG ####################### 
+  writefile(subset( results, select=c( Hospital.Name, mortHA))  )
+  print(results[1,2])
   }
 
 parse.data<- function (out, outcome_name) {
@@ -50,8 +51,22 @@ checkarguments<-function (state, outcome_name ) {
 }
 
 checkstate<- function(state) {
+  
   if (!is.character(state) ){ return (FALSE) }  
-  if (nchar(state) == 2 ) { 
-    return(TRUE)}
+  if (nchar(state) == 2 ) { return(TRUE) }
+  
+  
   else { return (FALSE) } #should not occur
+}
+writefile <- function( mydata) {    
+  write.table(mydata, "mydata.txt", sep="\t")  
+}
+is.state<- function (state){
+  statelist = c( "AK" ,"AL" ,"AR" ,"AZ" ,"CA" ,"CO" ,"CT" ,"DC" ,"DE" ,"FL" ,
+                 "GA" ,"GU" ,"HI" ,"IA" ,"ID" ,"IL" ,"IN" ,"KS" ,"KY" ,"LA" ,
+                 "MA" ,"MD" ,"ME" ,"MI" ,"MN" ,"MO" ,"MS" ,"MT" ,"NC" ,"ND" ,
+                 "NE" ,"NH" ,"NJ" ,"NM" ,"NV" ,"NY" ,"OH" ,"OK" ,"OR" ,"PA" ,
+                 "PR" ,"RI" ,"SC" ,"SD" ,"TN" ,"TX" ,"UT" ,"VT" ,"VI" ,"VA" ,
+                 "WA" ,"WI" ,"WV" ,"WY")
+  
 }
