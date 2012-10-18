@@ -7,8 +7,11 @@ best <- function(state, outcome_name ){
   checkarguments(state, outcome_name )
   
   outcome <- readoutcome(state)
-  str(outcome)
-  cat("name for ,11 ", dimnames(outcome))
+      names(outcome)[11] <- "mortHA"
+  listname <- names(outcome)
+  
+  
+  cat("name for ,11 ", listname, NL)
   
   #results <- parse.data(outcome,  outcome_name)
  
@@ -17,7 +20,7 @@ best <- function(state, outcome_name ){
 parse.data<- function (out, outcome_name) {
   
   out.sorted <- out[order(,out$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack  )]
-  #debug()
+
   #str(out.sorted)
 }
 readoutcome<-function(state){
