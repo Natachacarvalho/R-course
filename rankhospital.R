@@ -1,65 +1,81 @@
 
 NL <<- "\n"
-best <- function(state, outcome_name , num = "best"){ 
+outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
+outcomeINDEX <<-   c( 11, 17,23 )
+rankhospital <- function( state, outcome, num="best") {
   
-  checkarguments(state, outcome_name , num)
-  #cat("OK",NL)
-  outcome <- readoutcome()
-  #print(str(outcome))
-  states <- buildlistStates (outcome$State)
-  table(outcome$State)
-  smalltable<-data.frame(table(outcome$State),stringsAsFactors = FALSE)
-  colnames(smalltable)<-c("state","count")
-  outcome2 <-subsetsoutcomeState(smalltable, num)
-  print (str(smalltable))
-  print (str(outcome2)) 
+  # read outcome data 
+  outcome <- readcsvfile(state)
   
-  }
-
-makeplot<-function(outcome2 ){
-    fatal <- outcome2$count
-    state <- outcome2$state
-    boxplot( fatal ~ state , main = "Heart Attack 30 day Death Rate by State")
+  # check state/outcome are valid
+  checkarguments(state, outcome_name )
+  
+  # return hospital name in that state with the given rank
+  # for 30 day death rate
+  
+  
+  
+  
 }
 
-checkoutcome<-function(outcome_name) {
-  if (outcome_name == "heart attack" 
-      | outcome_name == "heart failure" 
-      | outcome_name == "pneumonia" )
-    return (TRUE)   
-  else  return (FALSE)
-} 
-checknum<-function(num) {
-    if (is.numeric(num)) return (TRUE)   ##TODO need to check for match state count
-    if (!is.character( num )) return (FALSE)   
-    if (num == "best" | num == "worst"  )  return (TRUE)
-    return (FALSE)
-  }
-checkarguments<-function (state, outcome_name ,num) { 
-  if (!checkstate(state))  stop ("invalid state")
-  if (!checkoutcome(outcome_name))  stop ("invalid outcome")
-  if (!checknum(num))  stop ("invalid num")
-}
-readoutcome<-function(){
-  value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")
-}
-buildlistStates <-function(States){  
-  uniq <- unique(toupper(States))
-  sorted<-order(uniq)
-  return (sorted)
-}
-subsetsoutcomeState<- function(smalltable, num ) {
-  criteria <- num
-  cat("num="      , str(num), NL)
-  cat("criteria" , str(criteria), NL)
-  if ( num == "best")  criteria<- 1 
-  if ( num == "worst")  criteria<- nrow(smalltable)
+best5 <- function(state, outcome_name ){ 
   
-  cat("num=" , str(num), NL)
-  cat("criteria" , str(criteria), NL)
-  print(str(criteria))
-  # using subset function
-  outcome2 <- subset(smalltable, smalltable$count >= criteria )
-  cat("outcome2.nrows = ", nrow(outcome2 ), NL)
-  return (outcome2)
+  checkarguments(state, outcome_name )
+
+  # need to looktable
+  index <- match(outcome_name , outcomeSTRINGS)
+  outcome_number <- outcomeINDEX[index]
+  outcome <- readcsvfile(state)
+  browse()
+  
+  #results <- parse.data(outcome,  outcome_number)
+ 
+  #print(results[1:2])
+  }
+
+parse.data<- function (out, outcome_number) {
+   
+  out.sorted <- out[order(out[outcome_number] ,na.last=NA ),]
+}
+readcsvfile<-function(state){
+  value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")  
+  table <- data.frame( value, stringsAsFactors = FALSE)
+  table[,11] <- as.numeric(gsub("Not Available", NA, table[,11]))
+  table[,17] <- as.numeric(gsub("Not Available", NA, table[,17]))
+  table[,23] <- as.numeric(gsub("Not Available", NA, table[,23]))
+  table <- subset(table, State == state )
+  #colnames(table[11] ) <- "mortHA"
+  #colnames(table[17] ) <- "mortHF"
+  #colnames(table[23] ) <- "mortPN"
+  # how can I exclude some columns
+  ha <- table[11]
+  hf <- table[17]
+  pn <- table[23]
+  st <- table[7]
+  ho <- table[2]
+  browser()
+  dfrm <- data.frame( c( ha,hf,pn,st, ho) )
+  return(dfrm)
+}
+
+checkarguments<-function (state, outcome_name ) { 
+  if (!is.outcome(outcome_name))  stop ("invalid outcome")
+  if (!is.state(state)) stop ("invalid state")
+}
+writefile <- function( mydata) {    
+  write.table(mydata, "mydata.txt", sep="\t")  
+}
+
+is.state<- function (state){
+  statelist = 
+    c( "AK" ,"AL" ,"AR" ,"AZ" ,"CA" ,"CO" ,"CT" ,"DC" ,"DE" ,"FL" ,
+       "GA" ,"GU" ,"HI" ,"IA" ,"ID" ,"IL" ,"IN" ,"KS" ,"KY" ,"LA" ,
+       "MA" ,"MD" ,"ME" ,"MI" ,"MN" ,"MO" ,"MS" ,"MT" ,"NC" ,"ND" ,
+       "NE" ,"NH" ,"NJ" ,"NM" ,"NV" ,"NY" ,"OH" ,"OK" ,"OR" ,"PA" ,
+       "PR" ,"RI" ,"SC" ,"SD" ,"TN" ,"TX" ,"UT" ,"VT" ,"VI" ,"VA" ,
+       "WA" ,"WI" ,"WV" ,"WY")
+  returnValue <-(! is.na(match( state, statelist)))
+  }
+is.outcome<-function(outcome_name) {
+  returnValue <-(! is.na(match( outcome_name, outcomeSTRINGS)))
 }
