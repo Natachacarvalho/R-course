@@ -1,42 +1,35 @@
 
 NL <<- "\n"
 outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
-outcomeINDEX <<-   c( 11, 17,23 )
-rankhospital <- function( state, outcome, num="best") {
+
+
+rankhospital <- function( state, outcome_name, num="best") {
   
   # read outcome data 
   outcome <- readcsvfile(state)
   
   # check state/outcome are valid
   checkarguments(state, outcome_name )
-  
+  index <- match(outcome_name , outcomeSTRINGS)
   # return hospital name in that state with the given rank
   # for 30 day death rate
+  sub  <- parse.data(outcome, index)
+  cat("TODO : Implement rank/worst best allready works")
+  cat("TODO : order hospital name alpha ")
+  print(sub[1,1:5])
+  cat("TODO : writefile needs work")
+  writefile( c( sub[,5],sub[,5], sub[,index]))
+}
+writefile <- function( mydata) {    
   
-  
-  
-  
+  write.table(mydata, "mydata.csv", sep=",")  
 }
 
-best5 <- function(state, outcome_name ){ 
-  
-  checkarguments(state, outcome_name )
-
-  # need to looktable
-  index <- match(outcome_name , outcomeSTRINGS)
-  outcome_number <- outcomeINDEX[index]
-  outcome <- readcsvfile(state)
-  browse()
-  
-  #results <- parse.data(outcome,  outcome_number)
- 
-  #print(results[1:2])
-  }
-
-parse.data<- function (out, outcome_number) {
-   
-  out.sorted <- out[order(out[outcome_number] ,na.last=NA ),]
+parse.data<- function (out, index) {
+  cat( "index = ", index, NL )
+  out.sorted <- out[order(out[index] ,na.last=NA ),]
 }
+
 readcsvfile<-function(state){
   value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")  
   table <- data.frame( value, stringsAsFactors = FALSE)
@@ -44,17 +37,8 @@ readcsvfile<-function(state){
   table[,17] <- as.numeric(gsub("Not Available", NA, table[,17]))
   table[,23] <- as.numeric(gsub("Not Available", NA, table[,23]))
   table <- subset(table, State == state )
-  #colnames(table[11] ) <- "mortHA"
-  #colnames(table[17] ) <- "mortHF"
-  #colnames(table[23] ) <- "mortPN"
-  # how can I exclude some columns
-  ha <- table[11]
-  hf <- table[17]
-  pn <- table[23]
-  st <- table[7]
-  ho <- table[2]
-  browser()
-  dfrm <- data.frame( c( ha,hf,pn,st, ho) )
+  ha <- table[11]; hf <- table[17]; pn <- table[23]; st <- table[7] ;ho <- table[2]
+  dfrm <- data.frame( c( ha,hf,pn,st, ho) ,stringsAsFactors = FALSE)
   return(dfrm)
 }
 
