@@ -6,21 +6,20 @@ outcomeINDEX <<-   c( 11, 17,23 )
 best <- function(state, outcome_name ){ 
   
   checkarguments(state, outcome_name )
+
+  # need to looktable
+  index <- match(outcome_name , outcomeSTRINGS)
+  outcome_number <- outcomeINDEX[index]
   outcome <- readoutcome(state)
-  savedName<-colnames(outcome)[11]    
-  colnames(outcome)[11] <- "mortHA"
-  
-  
+  outcomeName <- outcome[]
   results <- parse.data(outcome,  outcome_number)
-  colnames(results[11] ) < savedName
-  ###################### DEBUG ####################### 
-  writefile(subset( results, select=c( State,Hospital.Name, savedName))  )
+ 
   print(results[1,2])
   }
 
-parse.data<- function (out, outcome_name) {
- 
-  out.sorted <- out[order(out$mortHA ,na.last=NA ),]
+parse.data<- function (out, outcome_number) {
+   
+  out.sorted <- out[order(out[outcome_number] ,na.last=NA ),]
 }
 readoutcome<-function(state){
   value<-read.csv("outcome-of-care-measures.csv", colClasses = "character")  
