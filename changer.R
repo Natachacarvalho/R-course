@@ -17,8 +17,12 @@ print( v )
 cookbook12.13<- function(){
   
   dfrm <- buildFrame()
+  # colnames(data)[2] <- 'column 2'
+ 
+  
   #order(dfrm$month,dfrm$day)
-  dfrm <- dfrm[order(dfrm$month,dfrm$day),] #notice the final comma
+  dfrm
+  dfrm <- dfrm[order(dfrm$mth,dfrm$day),] #notice the final comma
   print(dfrm)
   }
 

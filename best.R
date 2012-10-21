@@ -4,8 +4,7 @@ outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
 outcomeINDEX <<-   c( 11, 17,23 )
 
 best <- function(state, outcome_name ){ 
-  
-  checkarguments(state, outcome_name )
+    checkarguments(state, outcome_name )
 
   # need to looktable
   index <- match(outcome_name , outcomeSTRINGS)
@@ -13,12 +12,10 @@ best <- function(state, outcome_name ){
   outcome <- readoutcome(state)
   outcomeName <- outcome[]
   results <- parse.data(outcome,  outcome_number)
- 
   print(results[1,2])
   }
 
-parse.data<- function (out, outcome_number) {
-   
+parse.data<- function (out, outcome_number) { 
   out.sorted <- out[order(out[outcome_number] ,na.last=NA ),]
 }
 readoutcome<-function(state){
