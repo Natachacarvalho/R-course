@@ -21,7 +21,7 @@ rankhospital <- function( state, outcome_name, num="best") {
   column_name = outcomeCOLS[index]
   # return hospital name in that state with the given rank  # for 30 day death rate
 
-  sub.sorted<- order.data(out, index)
+  sub.sorted<- order.data(sub_outcome, index)
  
   
    if (is.best(num) ) {
@@ -41,15 +41,17 @@ rankhospital <- function( state, outcome_name, num="best") {
      rtnString <- sub.sorted[num,5]
   
      print(rtnString) 
-  
-     all <- printall( sub_sorted, num)
+  filename <-  paste(outcome_name, ".csv")
+  write.csv(sub.sorted, filename)
+    # all <- printall( sub.sorted, num)
      return("all")
 }
 
 printall<-function( dfrm, num, index) {
+  i <- 1
   while ( i <= nrow(dfrm)) {
     ## state, outcome, hos
-    cat( dfrm[i,4], ",",dfrm[i,index], ",", dfrm$ho ,NL)
+    print( dfrm[i,4], ",",dfrm[i,index], ",", dfrm$ho ,NL)
   }
 }
 
