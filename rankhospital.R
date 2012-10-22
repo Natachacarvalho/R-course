@@ -3,6 +3,13 @@ NL <<- "\n"
 
 outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
 outcomeCOLS <- c("ha", "hf","pn")
+statelist = 
+  c( "AK" ,"AL" ,"AR" ,"AZ" ,"CA" ,"CO" ,"CT" ,"DC" ,"DE" ,"FL" ,
+     "GA" ,"GU" ,"HI" ,"IA" ,"ID" ,"IL" ,"IN" ,"KS" ,"KY" ,"LA" ,
+     "MA" ,"MD" ,"ME" ,"MI" ,"MN" ,"MO" ,"MS" ,"MT" ,"NC" ,"ND" ,
+     "NE" ,"NH" ,"NJ" ,"NM" ,"NV" ,"NY" ,"OH" ,"OK" ,"OR" ,"PA" ,
+     "PR" ,"RI" ,"SC" ,"SD" ,"TN" ,"TX" ,"UT" ,"VT" ,"VI" ,"VA" ,
+     "WA" ,"WI" ,"WV" ,"WY")
 
 rankhospital <- function( state, outcome_name, num="best") {
   # read outcome data 
@@ -14,7 +21,7 @@ rankhospital <- function( state, outcome_name, num="best") {
   index <- match(outcome_name , outcomeSTRINGS)
   column_name = outcomeCOLS[index]
   # return hospital name in that state with the given rank  # for 30 day death rate
-
+return("before order.data")
   sub.sorted<- order.data(sub_outcome, index)
   
    if (is.best(num) ) {
