@@ -1,12 +1,6 @@
-#cat(NL, "TODO : Implement rank/worst best allready works", NL)
-#cat(NL,"TODO : order hospital name alpha ",NL)
-#cat(NL,"TODO : writefile needs work",NL)
-NL <<- "\n"
-WORST <<- FALSE
-BEST  <<- FALSE
-RANK <<- FALSE
 
-RANKNUMBER <<- "NA"
+NL <<- "\n"
+
 outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
 outcomeCOLS <- c("ha", "hf","pn")
 
@@ -22,29 +16,24 @@ rankhospital <- function( state, outcome_name, num="best") {
   # return hospital name in that state with the given rank  # for 30 day death rate
 
   sub.sorted<- order.data(sub_outcome, index)
- 
   
    if (is.best(num) ) {
        rtnString <- sub.sorted[1, 5]
        print(rtnString)
-       return("best")
-         }
-  if (is.worst(num) ) {
-    cat("TODO FIX worst case",NL)
-    rtnString <- sub.sorted[1, 5]
+       
+         } else {
+  if (is.worst(num) ) {    
+    rtnString <- sub.sorted[nrow(sub.sorted), 5]
     print(rtnString)
-    return("worst")
-  }
-  cat("num =", num , NL)
-  cat("nrow =", nrow(sub.sorted) , NL)
+    }else {
 
-     rtnString <- sub.sorted[num,5]
-  
+     
+     rtnString <- sub.sorted[num,5] 
      print(rtnString) 
-  filename <-  paste(outcome_name, ".csv")
-  write.csv(sub.sorted, filename)
-    # all <- printall( sub.sorted, num)
-     return("all")
+     #filename <- paste( outcome_name, ".csv")
+     #write.csv(sub.sorted, filename)
+}
+         }
 }
 
 printall<-function( dfrm, num, index) {
@@ -76,9 +65,6 @@ readcsvfile<-function(state){
   return(dfrm)
 }
 
-writefile <- function( mydata) {    
-  write.table(mydata, "mydata.txt", sep="\t")  
-}
 
 checkarguments<-function (state, outcome_name,num ) { 
   if (!is.outcome(outcome_name))  stop ("invalid outcome")
@@ -87,30 +73,24 @@ checkarguments<-function (state, outcome_name,num ) {
  
 }
 is.best <- function(num){ 
-  if (num =="best") 
-  { BEST<-TRUE; cat("best = true", NL); return(TRUE) }
+  if (num =="best") { BEST<-TRUE;  return(TRUE) }
                           else return(FALSE)
                         }
 is.worst <- function(num){
-  if (num =="worst") { WORST<-TRUE;  cat("worst = true", NL);return(TRUE) } 
+  if (num =="worst") { WORST<-TRUE; return(TRUE) } 
                           else return(FALSE)
                           }
 
-is.validrank<-function(num) {
-  
+is.validrank<-function(num) { 
   if( is.best (num) | is.worst(num)) {
-    cat ( "is not rank", NL)
     return (TRUE)
   }
-  
-  
+   
   # Check the numeric value since it is not best/worst
   rank.number <- as.numeric(num) 
   if(is.na(rank.number)) stop("invalid rank")
   RANKNUMBER <-rank.number
   RANK<-TRUE
-  cat("(is.valid)rank.number = ", rank.number, NL)
-  # 
   return(TRUE)
 }
 is.state<- function (state){
@@ -127,7 +107,6 @@ is.outcome<-function(outcome_name) {
   returnValue <-(! is.na(match( outcome_name, outcomeSTRINGS)))
 }
 rev_order <- function (outcome) {
- 
   nr <- nrow(outcome)
   ordered =  (outcome[order(outcome[5],na.last=NA),] )
   reversed<-(rev( ordered ))
