@@ -5,7 +5,7 @@ statelist <<-
                    "NE" ,"NH" ,"NJ" ,"NM" ,"NV" ,"NY" ,"OH" ,"OK" ,"OR" ,"PA" ,
                    "PR" ,"RI" ,"SC" ,"SD" ,"TN" ,"TX" ,"UT" ,"VT" ,"VI" ,"VA" ,
                    "WA" ,"WI" ,"WV" ,"WY")
-NL <<- "NL"
+NL <<- "\n"
 outcomeSTRINGS <<- c( "heart attack","heart failure" ,"pneumonia")
 outcomeCOLS <<- c("ha", "hf","pn")
 
@@ -15,43 +15,50 @@ rankall <- function( outcome_name, num = "best") {
   checkarguments( outcome_name, num)
   #readoutcome
   index <- match(outcome_name , outcomeSTRINGS)
-
+  hospital <- c( rep("NA",54))
   state.frame <- 
-    data.frame( statelist, c(rep("NA",54)) ,stringsAsFactors = FALSE )
-    colnames(state.frame ) <- c("state", "hospital")
+    data.frame( hospital, statelist ,stringsAsFactors = FALSE )
+    
  for ( state in statelist){
 #for each state, let out be the subset on which you run order.data
    sub_outcome <- readcsvfile(state)
    # here is where I need to extract the name of the hotel
-   sorted_outcome <- order.data( sub_outcome, index, num)
+   sorted_outcome <- order.data( sub_outcome, index )
    # match and get an index for the cell in the state.frame.
    # store the hospital name
  
   #  print the result and loop 
-   printed.output <- prepare.output( sorted_outcome, num)
-   print(printed.output, state)
+   printed.output <- prepare.output( sorted_outcome, num )
+   state.index <- match(state, state.frame[,2] )
+   if (state.index == 0) stop ("invalid state index")
+   state.frame[state.index, 1] <- printed.output
+   
+   #cat (  state.index, " ")
  } # end for each
+  colnames(state.frame ) <- c( "hospital", "state")
+  filename <- paste( outcome_name, ".csv")
+  write.csv(state.frame, filename)
+  return(state.frame)
 }  # end of rankall
 
-order.data<- function (out, index, num) {
+order.data<- function (out, index) {
     # order on the outcome and the hospital 
   out.sorted <- na.omit(out[order(out[index],out[5] ) ,])
-  return(out.sorted)
-  #rtnvalue <- prepare.output( out.sorted, num )
+  return(out.sorted)  
 }
 ########
-prepare.output<-function ( sub.sorted, num, state){
+prepare.output<-function ( sub.sorted, num ){
  
-  if (is.best(num) ) { rtnString <- c( sub.sorted[1, 5] , ); return(rtnString) } 
+  if (is.best(num) ) { rtnString <- sub.sorted[1, 5] ; return(rtnString) } 
   else {
+    
     if (is.worst(num) )    
                      { rtnString <- sub.sorted[nrow(sub.sorted), 5]; return(rtnString) } 
     else 
-                     { rtnString <- sub.sorted[num,5] ; return(rtnString)   }
+                     { rtnString <-  sub.sorted[num,5];  return(rtnString)   }
   } # end prepare.output
   
-  #filename <- paste( outcome_name, ".csv")
-  #write.csv(sub.sorted, filename)
+
 }
 #########################################################
 checkarguments<-function ( outcome_name, num ) { 
