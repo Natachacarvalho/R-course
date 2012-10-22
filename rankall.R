@@ -18,28 +18,31 @@ rankall <- function( outcome_name, num = "best") {
 
   state.frame <- 
     data.frame( statelist, c(rep("NA",54)) ,stringsAsFactors = FALSE )
-  colnames(state.frame ) <- c("state", "hospital")
+    colnames(state.frame ) <- c("state", "hospital")
  for ( state in statelist){
 #for each state, let out be the subset on which you run order.data
    sub_outcome <- readcsvfile(state)
    # here is where I need to extract the name of the hotel
-   order.data( sub_outcome, index, num)
+   sorted_outcome <- order.data( sub_outcome, index, num)
    # match and get an index for the cell in the state.frame.
    # store the hospital name
  
   #  print the result and loop 
+   printed.output <- prepare.output( sorted_outcome, num)
+   print(printed.output, state)
  } # end for each
 }  # end of rankall
 
 order.data<- function (out, index, num) {
     # order on the outcome and the hospital 
   out.sorted <- na.omit(out[order(out[index],out[5] ) ,])
-  rtnvalue <- prepare.output( out.sorted, num )
+  return(out.sorted)
+  #rtnvalue <- prepare.output( out.sorted, num )
 }
 ########
-prepare.output<-function ( sub.sorted, num){
+prepare.output<-function ( sub.sorted, num, state){
  
-  if (is.best(num) ) { rtnString <- sub.sorted[1, 5]; return(rtnString) } 
+  if (is.best(num) ) { rtnString <- c( sub.sorted[1, 5] , ); return(rtnString) } 
   else {
     if (is.worst(num) )    
                      { rtnString <- sub.sorted[nrow(sub.sorted), 5]; return(rtnString) } 
